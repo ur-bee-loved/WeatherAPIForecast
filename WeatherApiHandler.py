@@ -4,7 +4,7 @@ import os
 import json
 import sqlite3
 import math
-import numpy as np
+##import numpy as np
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -22,7 +22,7 @@ def get_db_connection():
         conn.execute('PRAGMA foreign_keys = ON')  # Enable foreign key support
         return conn
     except sqlite3.Error as e:
-        print(f"Erro em conectar com a database: {e}")
+        print(f"Couldn't connect to the database: {e}")
         return None
 
 # Initialize database (create table if not exists)
@@ -50,12 +50,12 @@ def init_database():
             )
             ''')
             conn.commit()
-            print("Database inicializada e tabela criada.")
+            print("The database has been created and the tables are now set.")
         
         conn.close()
         return True
     except sqlite3.Error as e:
-        print(f"Erro de inicialização de database: {e}")
+        print(f"Couldn't initialize database: {e}")
         return False
 
 #Toda arquitetura do arquivo JSON é para garantir que não ocorram chamadas demais na API, visando evitar o pagamento de taxas extras.
@@ -88,7 +88,7 @@ def save_weather_to_db(weather_data):
     try:
         conn = get_db_connection()
         if conn is None:
-            print("Falha na criação de database: erro de conexão.")
+            print( "Couldn't create database.")
             return False
         
         cursor = conn.cursor()
@@ -107,25 +107,25 @@ def save_weather_to_db(weather_data):
             now
         ))
         conn.commit()
-        print(f"Dados de clima para {weather_data['city']} salvo na database")
+        print(f"Weather data for {weather_data['city']} has been etched onto the database.")
         conn.close()
         return True
     except sqlite3.Error as e:
-        print(f"Erro na hora de salvar os dados causado por: {e}")
+        print(f"{e} prevented you from saving data to the database.")
         return False
 
 # Pega o clima
 def get_weather(city_name):
     allowed, log = can_make_api_call()
     if not allowed:
-        print("⚠️ Limite de requests atingido")
+        print("⚠️ Resquest threshold reached. Why are you abusing my little infrastructure?")
         return
 
     params = {
         'q': city_name,
         'appid': API_KEY,
         'units': 'metric',
-        'lang': 'pt_br'
+        'lang': 'en'
     }
 
     try:
@@ -143,19 +143,21 @@ def get_weather(city_name):
         ##Preciso dimensionar o ponto de orvalho
         ##preciso traduzir a desc = data
         if rain >= 50:
-            rain_mood = "Chuva forte, Bianca está feliz."
+            rain_mood = "Strong rain, I'm probably happy"
         elif rain >= 20:
-            rain_mood = "Chuva moderada, poderia estar melhor."
+            rain_mood = "moderate rain, I could be doing better."
+        elif rain == 0:
+            rain_mood = "No rain, I'm probably sad."
         else:
-            rain_mood = "Chuva leve, Bianca está triste."
+            rain_mood = "Light rain, it's better than nothing "
 
-        print(f"\n🌤️  O clima em {city} está:\n")
-        print(f"Temperatura: {temp}°C (Sensação térmica de {feels}°C)")
-        print(f"Humidade relativa do ar: {humidity}%")
+        print(f"\n🌤️  The weather in {city} is:\n")
+        print(f"Temperature: {temp}°C (Around {feels}°C on flesh)")
+        print(f"Relative air humidity: {humidity}%")
         ## print(f"Ponto de orvalho: {dew:.2f}°C")
-        print(f"Descrição: {desc.capitalize()}")
-        print(f"Chuva?: {rain_mood}")
-        print(f"API requests hoje: {log[datetime.date.today().isoformat()]}/{DAILY_LIMIT}")
+        print(f"Description: {desc.capitalize()}")
+        print(f"is_rain == true?: {rain}mm. {rain_mood}")
+        print(f"API requests today: {log[datetime.date.today().isoformat()]}/{DAILY_LIMIT}")
 
         # Salvar no banco
         weather_data = {
@@ -169,23 +171,23 @@ def get_weather(city_name):
         save_weather_to_db(weather_data)
 
     except requests.exceptions.RequestException as e:
-        print("❌ Erro de rede:", e)
+        print("❌ Network error:", e)
     except KeyError:
-        print("❌ Cidade não encontrada ou erro no JSON.")
+        print("❌ Couldn't locate this city or JSON format error.")
     except Exception as e:
-        print("❌ Erro inesperado:", e)
+        print("❌ 404", e)
 
 # bota pa fude
 def main():
     if not init_database():
-        print("Falha em inicializar o banco de dados.")
+        print("Couldn't initialize databank.")
         return
     
     try:
-        city = input("Me diga uma cidade: ")
+        city = input("What city are we scanning today?: ")
         get_weather(city)
     except Exception as e:
-        print(f"Erro na execução do programa: {e}")
+        print(f"Error executing program: {e}")
         import traceback
         traceback.print_exc()
 
