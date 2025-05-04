@@ -29,11 +29,10 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-           git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} HEAD:main
           git add TESTE.md weather_data.db
           git commit -m "Atualização automática do clima"
           git push
         env:
           API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
