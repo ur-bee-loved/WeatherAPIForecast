@@ -184,7 +184,8 @@ def main():
         return
     
     try:
-        city = input("What city are we scanning today?: ")
+        ##city = input("What city are we scanning today?: ")
+        city = str("florianopolis")
         get_weather(city)
     except Exception as e:
         print(f"Error executing program: {e}")
