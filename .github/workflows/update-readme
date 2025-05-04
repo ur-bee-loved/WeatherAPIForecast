@@ -1,0 +1,36 @@
+name: Weather Data Updater
+description: Atualiza o arquivo README.md com dados do clima a cada hora.
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Atualiza o script de 60 em 60 minutos
+  workflow_dispatch:      # Para rodar manualmente também
+
+jobs:
+  atualizar-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python Setup
+        # Configura o Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Runner
+        run: WeatherApiHandler.py
+
+      - name: commit
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add README.md weather_data.db
+          git commit -m "Atualização automática do clima"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
