@@ -34,3 +34,5 @@ jobs:
           git push
         env:
           API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
+          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }} 
+  
