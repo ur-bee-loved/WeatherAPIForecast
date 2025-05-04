@@ -7,32 +7,38 @@ on:
   workflow_dispatch:      # Para rodar manualmente também
 
 jobs:
-  atualizar-readme:
+  update-readme:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Python Setup
-        # Configura o Python 3.10
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+          cache: 'pip'
 
-      - name: Instalar dependências
+      - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Runner
+      - name: Run weather update script
         run: python WeatherApiHandler.py
+        env:
+          WEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
+          API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}  # backup
 
-      - name: commit
+      - name: Configure Git
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Commit and push if changes
+        run: |
           git add TESTE.md weather_data.db api_calls.json
-          git commit -m "Atualização automática do clima"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Atualização automática do clima"
           git push
-        env:
-          API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
