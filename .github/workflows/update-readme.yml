@@ -23,7 +23,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Runner
-        run: WeatherApiHandler.py
+        run: python WeatherApiHandler.py
 
       - name: commit
         run: |
