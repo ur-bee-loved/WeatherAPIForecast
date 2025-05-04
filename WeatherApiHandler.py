@@ -10,7 +10,7 @@ load_dotenv()
 
 ##Define as configurações da API
    ##Estudar fazer um .env com a chave da API visando escalonamento e segurança.
-API_KEY = os.getenv('WEATHER_API_KEY')
+API_KEY = os.getenv('WEATHER_API_KEY') or os.getenv('API_KEY')
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 CALLS_LOG = "api_calls.json"
 DAILY_LIMIT = 950
