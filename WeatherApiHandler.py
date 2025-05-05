@@ -16,6 +16,7 @@ CALLS_LOG = "api_calls.json"
 DAILY_LIMIT = 950
 DB_PATH = 'weather_data.db'
 
+
 def get_db_connection():
     try:
         conn = sqlite3.connect(DB_PATH, timeout=20)  # Added timeout parameter
@@ -33,7 +34,7 @@ def init_database():
             return False
         
         cursor = conn.cursor()
-        
+            
         # Check if table exists before creating it
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='weather'")
         if not cursor.fetchone():
@@ -57,6 +58,7 @@ def init_database():
     except sqlite3.Error as e:
         print(f"Couldn't initialize database: {e}")
         return False
+
 
 #Toda arquitetura do arquivo JSON é para garantir que não ocorram chamadas demais na API, visando evitar o pagamento de taxas extras.
 def load_api_log():
@@ -176,6 +178,26 @@ def get_weather(city_name):
         print("❌ Couldn't locate this city or JSON format error.")
     except Exception as e:
         print("❌ 404", e)
+        
+def update_readme():
+    cursor = get_db_connection.cursor()
+    cursor.execute('SELECT * FROM weather ORDER BY id DESC LIMIT 1')
+    row = cursor.fetchone()
+
+    if row:
+        city, temp, feels_like, humidity, rain, description, timestamp = row[1:]
+
+        with open("TESTE.md", "w", encoding="utf-8") as f:
+            f.write(f"""\
+### ☁️ 🌤️  The weather in {city} is: {city}
+
+- Temperature: {temp}°C
+- On flesh: {feels_like}°C
+- Relative air humidity: {humidity}%
+- Rain: {rain} mm
+- Description: {description.capitalize()}
+- last updated: {timestamp}
+""")
 
 # bota pa fude
 def main():
@@ -195,3 +217,4 @@ def main():
 # entrada do programa
 if __name__ == "__main__":
     main()
+    update_readme()
