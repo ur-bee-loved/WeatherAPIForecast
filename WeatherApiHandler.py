@@ -180,7 +180,11 @@ def get_weather(city_name):
         print("❌ 404", e)
         
 def update_readme():
-    cursor = get_db_connection.cursor()
+    conn = get_db_connection()
+    if conn is None:
+        print("Couldn't connect to the database.")
+        return
+    cursor = conn.cursor()
     cursor.execute('SELECT * FROM weather ORDER BY id DESC LIMIT 1')
     row = cursor.fetchone()
 
