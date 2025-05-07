@@ -37,7 +37,7 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Commit and push if changes
+      - name: Commit and push
         run: |
           git add TESTE.md weather_data.db api_calls.json
           git diff --quiet && git diff --staged --quiet || git commit -m "Atualização automática do clima"
