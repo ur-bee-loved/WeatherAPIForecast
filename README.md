@@ -8,5 +8,9 @@ My efforts are now focused on handling the API calls from the weather forecast A
 
 Currently, I’m having problems hooking up the main code with the SQL database. It’s my first time using SQLite. Please send help.
 
-update_counter: 001 
-status: working on it
+05/06/2025
+  I've surpassed the latter problems. The code works. Now, however, my efforts are focused on handling the GPS coordinates from my cellphone in order to dinamically update the location of my API calls, so that if I change cities the code will auto-update. 
+  I dream of making it as precise as being able to locate the city region. Is it doable? Let's find out 
+
+update_counter: 002 
+status: main project DONE. Working on orbital programs. 
