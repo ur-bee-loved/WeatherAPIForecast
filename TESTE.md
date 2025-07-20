@@ -2,7 +2,7 @@
 
 - Temperature: 9.57°C
 - On flesh: 9.57°C
-- Relative air humidity: 100%
+- Relative air humidity: 93%
 - Rain: 0.0 mm
 - Description: Broken clouds
-- last updated: 2025-07-20T06:26:48.443066
+- last updated: 2025-07-20T07:16:54.539260
