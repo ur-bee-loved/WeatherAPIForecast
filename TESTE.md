@@ -1,8 +1,8 @@
 ### ☁️ 🌤️  The weather in Florianópolis is: Florianópolis
 
-- Temperature: 22.21°C
-- On flesh: 23.02°C
+- Temperature: 22.92°C
+- On flesh: 23.8°C
 - Relative air humidity: 97%
 - Rain: 0.0 mm
 - Description: Broken clouds
-- last updated: 2026-03-19T09:41:31.577195
+- last updated: 2026-03-19T10:38:28.772560
